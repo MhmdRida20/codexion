@@ -1,0 +1,39 @@
+Every coder needs to compile regularly and should never burn out.
+• Coders do not communicate with each other.
+• Coders do not know if another coder is about to burn out.
+• Needless to say, coders should avoid burnout
+
+Your program must take the following arguments (all mandatory):
+- number_of_coders   (also the number of dongles)
+- time_to_burnout -- in (milliseconds) If a coder did not start compiling within time_to_burnout milliseconds since the beginning 
+                                     of their last compile or the beginning of the simulation, they burn out.
+- time_to_compile -- (milliseconds) The time it takes for a coder to compile. During that time, they must hold two dongles.
+- time_to_debug -- (milliseconds) time to debuging 
+- time_to_refactor -- (milliseconds) The time a coder will spend refactoring. After completing the refactoring phase,
+                                   the coder will immediately attempt to acquire dongles and start compiling again.
+
+- number_of_compiles_required -- (int) If all coders have compiled at least this many times, the simulation stops. Otherwise, it stops when a coder burns out.
+- dongle_cooldown (in milliseconds): After being released, a dongle is unavailable until its cooldown has passed.  
+
+- scheduler :  The arbitration policy used by dongles to decide who gets them
+               when multiple coders request them.
+               The value must be exactly one of: *fifo* or *edf*.
+               fifo means First In, First Out: the dongle is granted to the coder whose request arrived first.
+               edf means Earliest Deadline First with deadline = last_compile_start + time_to_burnout. 
+
+
+#Rules
+
+- Each *coder* has a number ranging from 1 to number_of_coders.
+- Coder number 1 sits next to coder number number_of_coders. n - 1 < position < N + 1
+-- NB:  All arguments are mandatory. Reject invalid inputs such as negative numbers, non-integers, or a scheduler other than fifo or  edf.
+
+- Any state change of a coder must be formatted as follows: ◦ timestamp_in_ms {realTime} X {CoderNumber} has taken a dongle
+
+!! A message announcing that a coder burned out should be displayed no more than 10 ms after the actual burnout.
+
+
+- NB: Timing consideration: To reduce hardware impact on performance measurements, consider using CPU usage time instead of real-time
+    clock when feasible. However, for this project, real-time measurements using gettimeofday() are acceptable and recommended for simplicity.
+
+- we should create a coder using *pthread_create*
