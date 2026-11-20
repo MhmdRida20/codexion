@@ -1,1 +1,4 @@
+codexion
+obj/
+*.o
 a.out
